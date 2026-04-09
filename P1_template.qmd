@@ -1,0 +1,124 @@
+---
+title: "Client Report - What's in a Name?"
+subtitle: "Course DS 250"
+author: "Daniel Talbert"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false
+    
+---
+
+```{python}
+import pandas as pd
+import numpy as np
+from lets_plot import *
+
+LetsPlot.setup_html(isolated_frame=True)
+```
+
+
+## Project Notes
+
+__For Project 1 the answer to each question should include a chart **and** a written response. The years labels on your charts should not include a comma. At least **two** of your charts must include reference marks.__  
+
+```{python}
+# Learn morea about Code Cells: https://quarto.org/docs/reference/cells/cells-jupyter.html
+
+# Include and execute your code here
+df = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+## QUESTION|TASK 1
+
+__How does your name at your birth year compare to its use historically?__
+
+_Comparing my name with other years, it appears that I was on the drop off of the name's highest usage. The name "Daniel" spikes in the 40's, remains in high usage, and begins to drop off in the early 2000's._
+
+```{python}
+df[(df['name'] == 'Daniel') & (df['year'] == 2005)]
+daniel_data = df[df['name'] == 'Daniel']
+(ggplot(daniel_data, aes(x='year', y='Total')) + geom_line())
+
+```
+
+
+## QUESTION|TASK 2
+
+__If you talked to someone named Brittany on the phone, what is your guess of his or her age? What ages would you not guess?__
+
+_If I'm talking to someone named Brittany on the phone, I'm going to assume their age is 27. I wouldn't guess any age above 34._
+
+```{python}
+brittany_data = df[df['name'] == 'Brittany']
+(ggplot(brittany_data, aes(x='year', y='Total')) + geom_line())
+```
+
+
+## QUESTION|TASK 3
+
+__Mary, Martha, Peter, and Paul are all Christian names. From 1920 - 2000, compare the name usage of each of the four names in a single chart. What trends do you notice?__
+
+_It appears that the name has high usage in the 50's and slightly in the 60's. Before and after that period, the name doesn't seem to have high usage. Although, it is interesting to note that all 4 names follow the same level of usage in a synchronized manner._
+
+```{python}
+christian_names = df[(df['name'].isin(['Mary', 'Martha', 'Peter', 'Paul'])) & (df['year'] >= 1920) & (df['year'] <= 2000)]
+(ggplot(christian_names, aes(x='year', y='Total', color='name')) + geom_line())
+```
+
+
+
+## QUESTION|TASK 4
+
+__Think of a unique name from a famous movie. Plot the usage of that name and see how changes line up with the movie release. Does it look like the movie had an effect on usage?__  
+
+_I chose the name James from James Bond, the spy. It appears that the name was used most from even before the first recorded film. As the films are released over the years (1962-2021), the name actually gets used less and less. However, There were two James Bond films released in 1989 and 1995. Around these times there was a spike in the names usage as well, worthy of noting._
+
+```{python}
+James = df[df['name'] == 'James']
+(ggplot(James, aes(x='year', y='Total')) + geom_line())
+
+```
+
+---
+
+## STRETCH QUESTION|TASK 1
+
+__Reproduce the chart Elliot using the data from the `names_year.csv` file.__ 
+
+_The name "Elliot" appears to be frequently used over the years. The name appears to start being used heavily in the year 2000 and remains in high usage all the way until at least 2015._
+
+```{python}
+Elliot = df[df['name'] == 'Elliot']
+(ggplot(Elliot, aes(x='year', y='Total')) + geom_line())
+```
+
+```{python}
+# State-level data not available in the repository
+# Using national data instead
+oliver_national = df[df['name'] == 'Oliver']
+oliver_national['Total'].sum()
+```
+
+```{python}
+df[df['name'] == 'Felisha']['year'].min()
+```
+
+
+---

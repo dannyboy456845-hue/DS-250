@@ -1,0 +1,8 @@
+# Mac system files
+.DS_Store
+
+# Quarto generated output
+*.html
+_site/
+_freeze/
+.quarto/
